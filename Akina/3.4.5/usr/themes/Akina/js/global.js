@@ -1,4 +1,4 @@
-﻿//ajax评论
+//ajax评论
 var ajaxcomments = function(){
 	var
 	   $body = (window.opera) ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body');
@@ -182,7 +182,7 @@ var mNav_hide = function(){
  * AJAX Single
 */
 var loadSingle = function(){
-	$("#pagination a").live("click", function(){
+	$("#pagination a").on("click", function(){
 	    $(this).addClass("loading").text("");
 	    $.ajax({
 		type: "POST",
@@ -208,7 +208,7 @@ var loadSingle = function(){
 // 评论分页
 $body=(window.opera)?(document.compatMode=="CSS1Compat"?$('html'):$('body')):$('html,body');
 // 点击分页导航链接时触发分页
-$('#comments-navi a').live('click', function(e){
+$('#comments-navi a').on('click', function(e){
     e.preventDefault();
     $.ajax({
         type: "POST",
@@ -243,7 +243,7 @@ $(window).preloader({
  * Click Event  防止一些点击事件因为而pjax失效  代码取自路易
 */
 var clickEvent = function(){
-	
+	loadSingle();
 	ajaxcomments();
 //表情js	
   $(".smli-button").click(function(){
@@ -283,6 +283,21 @@ $("#toggle-comment-info").click(function click_comment_info(){
         }
     });
 	
+
+	
+// Show & hide comments
+//	$('.comments-hidden').show();
+//	$('.comments-main').hide();
+//	$('.comments-hidden').click(function(){
+//		$('.comments-main').slideDown(500);
+//		$('.comments-hidden').hide();
+//	});	
+}
+
+/*
+ * Click Event end
+*/
+
 //搜索盒子
 function removeBox(){
     $('.js-toggle-search').toggleClass('is-active');
@@ -310,22 +325,9 @@ $(".search-div").children().click(function(){
     event.stopPropagation(); 
     if($(this)[0].className!="submit"){ removeBox() }
 });
-	
-// Show & hide comments
-	$('.comments-hidden').show();
-	$('.comments-main').hide();
-	$('.comments-hidden').click(function(){
-		$('.comments-main').slideDown(500);
-		$('.comments-hidden').hide();
-	});	
-}
-
-/*
- * Click Event end
-*/
 
 //gotop		
-jQuery(document).ready(function($){
+$(document).ready(function($){
 	// browser window scroll (in pixels) after which the "back to top" link is shown
 	var offset = 100,
 		//browser window scroll (in pixels) after which the "back to top" link opacity is reduced
@@ -342,7 +344,6 @@ jQuery(document).ready(function($){
 			$back_to_top.addClass('cd-fade-out');
 		}
 	});
-
 	//smooth scroll to top
 	$back_to_top.on('click', function(event){
 		event.preventDefault();
@@ -351,17 +352,25 @@ jQuery(document).ready(function($){
 		 	}, scroll_top_duration
 		);
 	});
-	
 	//pjax
 	if(app.pjax){
-	$(document).pjax('a[target!=_top]', '#page', {
-        	fragment: '#page', //主容器
+	$(document).pjax('a[target!=_top]', '#pjax', {
+        	fragment: '#pjax', //主容器
         	timeout: 8000, // 8秒限时
+	    }).on('submit', 'form[id=search], form[id=msearch], form[id=commentform]', function(a) {
+		$.pjax.submit(a, {
+			container: '#pjax',
+			fragment: '#pjax',
+			timeout: 8000,
+			});
 	    }).on('pjax:send', function() {
 			$('body').append('<div id="preloader"><div id="preloader-inner"></div></div>'); // 加载过度动画
 	    }).on('pjax:complete', function() { // 加载完毕				
 			clickEvent(); // 一些点击事件
+			Prism.highlightAll();
 			$('#preloader').remove(); // 删除过度动画
+			$('body,html').animate({scrollTop: 80 ,});
+			if(document.getElementById("comment")) {$.getScript(pjaxOwO);}
 	    });
 	}
 	if (xl == 1) { //判断
@@ -387,16 +396,15 @@ jQuery(document).ready(function($){
 // Load Function
 loading();
 clickEvent();
-loadSingle();
 mNav();
 } )( jQuery );
 //为默认编辑器代码标签添加高亮
-var preLigut = document.getElementsByTagName("pre");
-for(var i = 0;  i < preLigut.length; i++){
-    if(preLigut[i].className==""){
-        preLigut[i].classList.add("language-js");
-    }
-}
+//var preLigut = document.getElementsByTagName("pre");
+//for(var i = 0;  i < preLigut.length; i++){
+//    if(preLigut[i].className==""){
+//        preLigut[i].classList.add("language-js");
+//    }
+//}
 //除友链外，自动添加blank nofollow noopener noreferrer标签
 $(document).ready(function(){
 	$("a[href*='://']:not(a[href^='"+document.location.protocol+"//"+document.location.host+"'],a[href^='javascript:'])").attr({target:"_blank",rel:"nofollow noopener noreferrer"});
