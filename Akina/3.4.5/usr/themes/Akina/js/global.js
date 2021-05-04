@@ -354,7 +354,7 @@ $(document).ready(function($){
 	});
 	//pjax
 	if(app.pjax){
-	$(document).pjax('a[target!=_top]', '#pjax', {
+	$(document).pjax('a[target!=_top]:not([no-pjax])', '#pjax', {
         	fragment: '#pjax', //主容器
         	timeout: 8000, // 8秒限时
 	    }).on('submit', 'form[id=search], form[id=msearch], form[id=commentform]', function(a) {
