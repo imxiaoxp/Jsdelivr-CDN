@@ -139,30 +139,30 @@ var ajaxcomments = function(){
  }
 
 //nav show/hidden
-$(function(){
-	var h1 = 0;
-	var h2 = 50;
-	var ss = $(document).scrollTop();
-	$(window).scroll(function(){
-		var s = $(document).scrollTop();
+//$(function(){
+//	var h1 = 0;
+//	var h2 = 50;
+//	var ss = $(document).scrollTop();
+//	$(window).scroll(function(){
+//		var s = $(document).scrollTop();
 
-		if(s== h1){
-			$('.site-header').removeClass('yya');
-		}if(s > h1){
-			$('.site-header').addClass('yya');
-		}if(s > h2){
-			$('.site-header').addClass('gizle');
-			if(s > ss){
-				$('.site-header').removeClass('sabit');
-			}else{
-				$('.site-header').addClass('sabit');
-			}
-			ss = s;
-		}
+//		if(s== h1){
+//			$('.site-header').removeClass('yya');
+//		}if(s > h1){
+//			$('.site-header').addClass('yya');
+//		}if(s > h2){
+//			$('.site-header').addClass('gizle');
+//			if(s > ss){
+//				$('.site-header').removeClass('sabit');
+//			}else{
+//				$('.site-header').addClass('sabit');
+//			}
+//			ss = s;
+//		}
 
-	});
+//	});
 	
-});
+//});
  
 //mo-nav
 var mNav = function(){
@@ -369,7 +369,7 @@ $(document).ready(function($){
 			clickEvent(); // 一些点击事件
 			Prism.highlightAll();
 			$('#preloader').remove(); // 删除过度动画
-			$('body,html').animate({scrollTop: 80 ,});
+			//$('body,html').animate({scrollTop: 80 ,});
 			if(document.getElementById("comment")) {$.getScript(pjaxOwO);}
 	    });
 	}
